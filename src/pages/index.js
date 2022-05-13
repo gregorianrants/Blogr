@@ -78,7 +78,10 @@ const IndexPage = () => {
         <>
             <Reset />
             <Header>
-                <PositionBackGround pairs={[[0,867],[350,867],[1440,2086],[3000,867]]}>
+                <PositionBackGround
+                    pairs={[[0,867],[350,867],[1440,2086],[3000,867]]}
+                    widthCentrePairs={[[0,90],[350,90],[867,50],[1440,50],[3000,50]]}
+                >
                     <LogoContainer/>
                     <Menu />
                 </PositionBackGround>
