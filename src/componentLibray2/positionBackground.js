@@ -15,6 +15,7 @@ function movePercentageAcrossContainer(containerWidth,percentage){
     return (containerWidth/100)*percentage
 }
 
+
 function positionBackgroundF(percentage){
     return function positionBackGround(containerWidth,backGroundWidth){
         let left = offsetBackgroundLeftEdge(backGroundWidth)
@@ -23,18 +24,35 @@ function positionBackgroundF(percentage){
     }
 }
 
-function getPercentage(s,c1,b1){
-    return ((c1*s-b1)/(s-1))*100
-}
+//const positionBackground = positionBackgroundF(75)
+
+// function reducerF(sizes,horizontalPositions){
+//     const findSize = configure(sizes)
+//     const findCentre = configure(horizontalPositions)
+//
+//     return function(state,action){
+//         if(action.type==='resize'){
+//             const {containerWidth} = action.payload
+//             const backgroundWidth = findY(containerWidth)
+//             const backgroundCentre = findCentre(containerWidth)
+//             const positionBackground = positionBackgroundF(backgroundCentre)
+//             return {
+//                 ...state,
+//                 backgroundPosition: positionBackground(containerWidth,backgroundWidth),
+//                 backgroundWidth: backgroundWidth
+//             }
+//         }
+//     }
+// }
 
 const BackgroundStyled = styled.div`
     width: 100%;
     height: 100%;
     background-image: url(${bgPatternIntro});
     background-repeat: no-repeat;
-    background-size: 350%;
+    background-size: ${props=>props.backgroundWidth+'px'};
     background-position:
-           ${getPercentage(3.5,0.4,0.5)+'%'}
+            ${props=> props.backgroundPosition+'px'}
             center;
 `
 
