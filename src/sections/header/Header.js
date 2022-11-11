@@ -1,104 +1,171 @@
 import styled from "styled-components";
-import bgPatternIntro from "../../images/bg-pattern-intro-cropped.svg";
-import {TopBar} from "./TopBar";
 import React from "react";
-import {StaticImage} from 'gatsby-plugin-image'
-import {rem} from '../../css_globals'
 import Section from'../../components/Section'
+import Background from "./Background";
+import iconHamburger from '../../images/icon-hamburger.svg'
+import logo from '../../images/logo.svg'
+import Menu from './Menu'
+import Dropdown from "../../components/Dropdown";
 
-
-const breakPoints = {
-    xs: '300px',
-    sm: '375px',
-    md: '900px',
-    lg: '1400px'
-}
-
-const Gradient = styled.div`
-  height: 600px;
-  background-image: linear-gradient(to bottom right,rgb(255,141,113,1),rgb(255,64,86,1));
-  @media(max-width: ${breakPoints.md}){
-    background-image: linear-gradient(to bottom right,#FF8C71, #FF856E 19%, #FF4056);
-  }
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 `
-/*
-*gives background-position value to line up
-* a point a certain % along background image - backgroundPoint :: number e.g. 75
-* with point a certain % along the elmement that the background image is set on
-* returns a string e.g. 125%
-* */
-function backgroundPositionHorizontal(containerPoint, backgroundPoint, backgroundSize) {
-    containerPoint = containerPoint / 100
-    backgroundPoint = backgroundPoint / 100
-    backgroundSize = backgroundSize / 100
-    const numerator = backgroundSize * backgroundPoint - containerPoint
-    const denom = backgroundSize - 1
-    const calcResult = numerator / denom
-    return String(calcResult * 100) + '%'
-}
 
-/*postions the middle of background image at the %point across the container
-containerHeight is pixel height of the elment the background image is set on - number
-container point is the % position across the container we want to position centre
-returns a css calc function as a string that will do the positioning.*/
-function backgroundPositionVertical(containerHeight, containerPoint) {
-    const percentageOffsetFromMiddle = containerPoint - 50
-    const offset = String((containerHeight / 100) * percentageOffsetFromMiddle) + 'px'
-    return `calc(50% + ${offset})`
-}
+const Left = styled.div`
 
-const backgroundSizeXs = 300
-const backgroundSizeSmall = 233 //(876/375)*100
-const backgroundSizeLarge = 144.86 //(2086/1440)*100
-const backgroundSizeMedium = 200
-/*;*/
-const BackgroundStyled = styled.div`
-  height: 100%;
-  background-image: url(${bgPatternIntro});
+`
+
+const Right = styled.div`
+
+`
+
+
+const Burger = styled.div`
+  height: 30px;
+  width: 30px;
+  background-image: url(${iconHamburger});
   background-repeat: no-repeat;
-  
-  background-size: ${backgroundSizeLarge}%;
-  background-position: ${backgroundPositionHorizontal(80, 50, backgroundSizeLarge)} 
-  ${backgroundPositionVertical(851, 40)};
-  
+  background-position: center center;
+`
 
-  @media (max-width: ${breakPoints.md}) {
-    background-size: ${backgroundSizeMedium}%;
-    background-position: ${backgroundPositionHorizontal(80, 50, backgroundSizeMedium)} 
-    ${backgroundPositionVertical(851, 40)};
-  }
-  
-  @media (max-width: ${breakPoints.sm}) {
-    background-size: ${backgroundSizeSmall}%;
-    background-position: ${backgroundPositionHorizontal(95, 50, backgroundSizeSmall)} 
-    ${backgroundPositionVertical(851, 65)};
-  }
-
-  @media (max-width: ${breakPoints.xs}) {
-    background-size: ${backgroundSizeXs}%;
-    background-position: ${backgroundPositionHorizontal(95, 50, backgroundSizeXs)} 
-    ${backgroundPositionVertical(851, 65)};
-  }
+const Logo = styled.img`
+  width: 82px;
 `
 
 const Container = styled.div`
-padding-top: 56px;
+  padding-top: 56px;
+`
+
+const TopMenuItem = styled.a`
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  padding-top: 24px;
+  font-family: Overpass;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+  color: #1F3E5A;
+  `
+
+const SubMenu = styled.ul`
+  font-family: Overpass;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  color: #1F3E5A;
+  text-align: center;
+  background-color: rgba(45,46,64,0.08);
+  margin-top: 24px;
+
+`
+
+const SubMenuItem = styled.li`
+padding-top: 24px;
+  &:last-child {
+    padding-bottom: 24px;
+  }
+`
+
+const MenuStyled = styled.nav`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  overflow: hidden;
+  height: ${props=> props.open ? 'auto' : 0};
+  padding-left: 24px;
+  padding-right: 24px;
+  box-shadow: 0 10px 15px 10px rgba(45,46,64,0.08);;
 `
 
 function Header(){
-    return (
+    const [open,setOpen] = React.useState(true)
+    const {closeAll}=Dropdown.useDropdown()
+    function toggleOpen(){
+        setOpen(val=>!val)
+        closeAll()
+    }
 
-            <Gradient>
-                <BackgroundStyled>
+    return (
+                <Background>
                     <Section>
                         <Container>
-                            <TopBar/>
+                            <TopBar>
+                                <Logo src={logo} alt={'logo'}/>
+                                <MenuStyled open={open}>
+                                        <Left>
+                                            <Dropdown.SubMenu id={1}>
+                                                <Dropdown.Handle>
+                                                    <TopMenuItem>
+                                                        Product
+                                                    </TopMenuItem>
+                                                </Dropdown.Handle>
+                                                <Dropdown.Drawer>
+                                                    <SubMenu>
+                                                        <SubMenuItem>Overview</SubMenuItem>
+                                                        <SubMenuItem>Pricing</SubMenuItem>
+                                                        <SubMenuItem>Marketplace</SubMenuItem>
+                                                        <SubMenuItem>Features</SubMenuItem>
+                                                        <SubMenuItem>Integrations</SubMenuItem>
+                                                    </SubMenu>
+                                                </Dropdown.Drawer>
+                                            </Dropdown.SubMenu>
+                                            <Dropdown.SubMenu id={2}>
+                                                <Dropdown.Handle>
+                                                    <TopMenuItem>
+                                                        Company
+                                                    </TopMenuItem>
+                                                </Dropdown.Handle>
+                                                <Dropdown.Drawer>
+                                                    <SubMenu>
+                                                        <SubMenuItem>About</SubMenuItem>
+                                                        <SubMenuItem>Team</SubMenuItem>
+                                                        <SubMenuItem>Blog</SubMenuItem>
+                                                        <SubMenuItem>Careers</SubMenuItem>
+                                                    </SubMenu>
+                                                </Dropdown.Drawer>
+                                            </Dropdown.SubMenu>
+                                            <Dropdown.SubMenu id={3}>
+                                                <Dropdown.Handle>
+                                                    <TopMenuItem>
+                                                        Connect
+                                                    </TopMenuItem>
+                                                </Dropdown.Handle>
+                                                <Dropdown.Drawer>
+                                                    <SubMenu>
+                                                        <SubMenuItem>Contact</SubMenuItem>
+                                                        <SubMenuItem>Newsletter</SubMenuItem>
+                                                        <SubMenuItem>LinkedIn</SubMenuItem>
+                                                    </SubMenu>
+                                                </Dropdown.Drawer>
+                                            </Dropdown.SubMenu>
+                                        </Left>
+                                        <Right>
+                                            <TopMenuItem>Login</TopMenuItem>
+                                        </Right>
+                                </MenuStyled>
+                                <Burger onClick={toggleOpen}/>
+                            </TopBar>
                         </Container>
                     </Section>
-                </BackgroundStyled>
-            </Gradient>
-
+                </Background>
     )
 }
 
-export default Header
+function WithProvider(){
+    return (
+        <Dropdown.Provider>
+            <Header />
+        </Dropdown.Provider>
+    )
+}
+
+
+
+
+export default WithProvider

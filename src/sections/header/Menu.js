@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Typography from "../../components/Typography";
-import DropDown from "../../components/DropDown";
+import Dropdown from "../../components/DropDown";
 
 const Nav = styled.nav`
 
@@ -47,7 +47,6 @@ padding-top: 24px;
   }
 `
 
-
 const MenuStyled = styled.nav`
   position: absolute;
   top: 100%;
@@ -61,17 +60,18 @@ const MenuStyled = styled.nav`
   box-shadow: 0 10px 15px 10px rgba(45,46,64,0.08);;
 `
 
-export default function TopBarMenu({open}){
+export default function Menu({open}){
     return (
         <MenuStyled open={open}>
+            <Dropdown.Provider>
                 <Left>
-                    <DropDown>
-                        <DropDown.Handle>
+                    <Dropdown.SubMenu id={1}>
+                        <Dropdown.Handle>
                             <TopMenuItem>
                                 Product
                             </TopMenuItem>
-                        </DropDown.Handle>
-                        <DropDown.Drawer>
+                        </Dropdown.Handle>
+                        <Dropdown.Drawer>
                             <SubMenu>
                                 <SubMenuItem>Overview</SubMenuItem>
                                 <SubMenuItem>Pricing</SubMenuItem>
@@ -79,41 +79,42 @@ export default function TopBarMenu({open}){
                                 <SubMenuItem>Features</SubMenuItem>
                                 <SubMenuItem>Integrations</SubMenuItem>
                             </SubMenu>
-                        </DropDown.Drawer>
-                    </DropDown>
-                    <DropDown>
-                        <DropDown.Handle>
+                        </Dropdown.Drawer>
+                    </Dropdown.SubMenu>
+                    <Dropdown.SubMenu id={2}>
+                        <Dropdown.Handle>
                             <TopMenuItem>
                                 Company
                             </TopMenuItem>
-                        </DropDown.Handle>
-                        <DropDown.Drawer>
+                        </Dropdown.Handle>
+                        <Dropdown.Drawer>
                             <SubMenu>
                                 <SubMenuItem>About</SubMenuItem>
                                 <SubMenuItem>Team</SubMenuItem>
                                 <SubMenuItem>Blog</SubMenuItem>
                                 <SubMenuItem>Careers</SubMenuItem>
                             </SubMenu>
-                        </DropDown.Drawer>
-                    </DropDown>
-                    <DropDown>
-                        <DropDown.Handle>
+                        </Dropdown.Drawer>
+                    </Dropdown.SubMenu>
+                    <Dropdown.SubMenu id={3}>
+                        <Dropdown.Handle>
                             <TopMenuItem>
                                 Connect
                             </TopMenuItem>
-                        </DropDown.Handle>
-                        <DropDown.Drawer>
+                        </Dropdown.Handle>
+                        <Dropdown.Drawer>
                             <SubMenu>
                                 <SubMenuItem>Contact</SubMenuItem>
                                 <SubMenuItem>Newsletter</SubMenuItem>
                                 <SubMenuItem>LinkedIn</SubMenuItem>
                             </SubMenu>
-                        </DropDown.Drawer>
-                    </DropDown>
+                        </Dropdown.Drawer>
+                    </Dropdown.SubMenu>
                 </Left>
                 <Right>
                     <TopMenuItem>Login</TopMenuItem>
                 </Right>
+            </Dropdown.Provider>
         </MenuStyled>
     )
 }
